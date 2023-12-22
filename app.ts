@@ -1,15 +1,15 @@
 import "dotenv/config";
-import { createServer } from "node:http";
-import pageHandler from "./handlers/pageHandler";
+import express from "express";
+import indexRouter from "./routes/indexRouter";
 
-const localHostname = process.env.LOCAL_HOSTNAME;
-const localHost = process.env.LOCAL_HOST;
-const port = Number(process.env.PORT);
+const hostname = process.env.HOSTNAME ?? "localhost";
+const host = process.env.HOST ?? "http://localhost";
+const port = Number(process.env.PORT ?? 8080);
 
-const server = createServer(async (req, res) => {
-  return await pageHandler(req, res);
-});
+const app = express();
 
-server.listen(port, localHostname, () => {
-  console.log(`Listening on ${localHost}:${port}`);
+app.use(indexRouter);
+
+app.listen(port, hostname, () => {
+  console.log(`Listening on ${host}:${port}`);
 });
